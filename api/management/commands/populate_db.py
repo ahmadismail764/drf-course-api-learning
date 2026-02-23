@@ -13,7 +13,7 @@ class Command(BaseCommand):
         # get or create superuser
         user = User.objects.filter(username='admin').first()
         if not user:
-            user = User.objects.create_superuser(username='admin', password='test')
+            user = User.objects.create_superuser(username='admin', password='test') # type: ignore
 
         # create products - name, desc, price, stock, image
         products = [
