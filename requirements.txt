@@ -5,6 +5,7 @@ djangorestframework
 pillow
 sqlparse
 tzdata
+django-silk
 
 # Added for Postgres and .env support
 python-dotenv
