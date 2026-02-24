@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 class ProductListAPIView(generics.ListAPIView):
     # queryset = Product.objects.only('id', 'name', 'price', 'stock')
@@ -52,12 +53,22 @@ class UserOrderListAPIView(generics.ListAPIView):
 #     serializer = OrderSerializer(orders, many=True) # This turns it into a consumable format
 #     return Response(serializer.data) # This returns the data as a JSON response
 
-@api_view(['GET'])
-def product_info(request):
-    products = Product.objects.all()
-    serializer = ProductInfoSerializer({
-        'products': products,
-        'count': len(products),
-        'max_price': products.aggregate(max_price=Max('price'))['max_price']
-    })
-    return Response(serializer.data)
+class ProductInfoAPIView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductInfoSerializer({
+            'products': products,
+            'count': len(products),
+            'max_price': products.aggregate(max_price=Max('price'))['max_price']
+        })
+        return Response(serializer.data)
+
+# @api_view(['GET'])
+# def product_info(request):
+#     products = Product.objects.all()
+#     serializer = ProductInfoSerializer({
+#         'products': products,
+#         'count': len(products),
+#         'max_price': products.aggregate(max_price=Max('price'))['max_price']
+#     })
+#     return Response(serializer.data)
