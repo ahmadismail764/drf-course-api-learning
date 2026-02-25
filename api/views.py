@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (IsAuthenticated, IsAdminUser, AllowAny)
 from rest_framework.views import APIView
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -16,6 +16,11 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # handles both GET and POST requests implicitly (and for the same endpoint)
     # And it's in the name "ListCreate"
     # All in 3 lines of code
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method == 'POST':
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
 
 
 """ 
