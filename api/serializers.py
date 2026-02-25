@@ -4,11 +4,19 @@ from .models import Product, Order, OrderItem
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'stock')
+        fields = (
+            # 'id',
+            'description',
+            'name',
+            'price',
+            'stock'
+        )
     
     
     def validate_price(self, value):
-        if value >= 0:
+        # Ensure the price is strictly greater than zero.
+        # The original condition was inverted and rejected valid positive prices.
+        if value <= 0:
             raise serializers.ValidationError(
                 "Price must be greater than 0."
             )

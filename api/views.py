@@ -9,11 +9,31 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # This class is particularly powerful because it
+    # handles both GET and POST requests implicitly (and for the same endpoint)
+    # And it's in the name "ListCreate"
+    # All in 3 lines of code
+
+
+""" 
+The above is a combination of the ProductListAPIView and ProductCreateAPIView into one view
 class ProductListAPIView(generics.ListAPIView):
     # queryset = Product.objects.only('id', 'name', 'price', 'stock')
-    queryset = Product.objects.only('id', 'name', 'price', 'stock').filter(stock__gt=0)
+    # queryset = Product.objects.only('id', 'name', 'price', 'stock').filter(stock__gt=0)
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+class ProductCreateAPIView(generics.CreateAPIView):
+    model = Product
+    serializer_class = ProductSerializer
+
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        return super().create(request, *args, **kwargs) 
+"""
 # @api_view(['GET'])
 # def product_list(request):
 #     products = Product.objects.all() # This returns a django model
